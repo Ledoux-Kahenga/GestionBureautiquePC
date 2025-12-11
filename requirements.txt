@@ -1,0 +1,11 @@
+# Dépendances pour l'application de gestion d'imprimerie
+# sqlite3 est inclus avec Python
+
+# Interface graphique PyQt5
+PyQt5==5.15.10
+
+# Pour la génération de PDF
+reportlab==4.0.7
+
+# Pour la gestion des dates
+python-dateutil==2.8.2

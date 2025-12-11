@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pyo
+*.db
+rapports/*.pdf
+.venv/
+api/__pycache__/
+api/routers/__pycache__/
