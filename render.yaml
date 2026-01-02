@@ -3,7 +3,7 @@
 
 services:
   - type: web
-    name: gestion-imprimerie-api
+    name: gestion-bureautique
     runtime: python
     region: frankfurt  # Région européenne la plus proche
     plan: free
