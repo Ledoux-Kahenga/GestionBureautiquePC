@@ -10,9 +10,11 @@ from PyQt5.QtGui import QFont, QColor, QPixmap
 from datetime import datetime, timedelta
 from models.transaction_model import TransactionModel as Database
 from utils.pdf_generator import PDFGenerator as GenerateurRapportPDF
+from utils.backup import BackupManager
 from views.caisse_tab import CaisseTab
 from views.accueil_tab import AccueilTab
 from views.rapports_tab import RapportsTab
+from views.settings_tab import SettingsTab
 from config import *
 import os
 
@@ -23,6 +25,7 @@ class ImprimerieApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.db = Database()
+        self.backup_manager = BackupManager()
         self.jour_courant = datetime.now().strftime("%Y-%m-%d")
         self.verifier_nouveau_jour()  # Vérifier si c'est un nouveau jour au démarrage
         self.setup_window()
@@ -31,6 +34,20 @@ class ImprimerieApp(QMainWindow):
         self.actualiser_dashboard()
         self.actualiser_caisse()
         self.setup_auto_cloture()  # Configurer la clôture automatique
+    
+    def closeEvent(self, event):
+        """Gestionnaire de fermeture de l'application"""
+        settings = self.backup_manager.load_settings()
+        
+        if settings.get('backup_on_close', True):
+            # Créer une sauvegarde automatique avant fermeture
+            success, result = self.backup_manager.create_backup("Sauvegarde automatique à la fermeture")
+            if success:
+                print(f"Sauvegarde automatique créée: {result}")
+            else:
+                print(f"Erreur de sauvegarde: {result}")
+        
+        event.accept()
         
     def setup_window(self):
         """Configurer la fenêtre principale"""
@@ -280,10 +297,34 @@ class ImprimerieApp(QMainWindow):
         caisse_main_layout.addWidget(caisse_scroll)
         caisse_tab.setLayout(caisse_main_layout)
         
+        # Onglet Paramètres
+        settings_tab = QWidget()
+        settings_scroll = QScrollArea()
+        settings_scroll.setWidgetResizable(True)
+        settings_scroll.setFrameShape(QFrame.NoFrame)
+        
+        settings_content = QWidget()
+        settings_layout = QVBoxLayout()
+        settings_layout.setContentsMargins(0, 0, 0, 0)
+        settings_layout.setSpacing(20)
+        settings_content.setLayout(settings_layout)
+        
+        # Utiliser la classe SettingsTab
+        self.settings_tab_widget = SettingsTab(self.db, self)
+        settings_layout.addWidget(self.settings_tab_widget)
+        
+        settings_scroll.setWidget(settings_content)
+        
+        settings_main_layout = QVBoxLayout()
+        settings_main_layout.setContentsMargins(0, 0, 0, 0)
+        settings_main_layout.addWidget(settings_scroll)
+        settings_tab.setLayout(settings_main_layout)
+        
         # Ajouter les onglets
         self.tabs.addTab(main_tab, "🏠 Accueil")
         self.tabs.addTab(rapports_tab, "📊 Rapports")
         self.tabs.addTab(caisse_tab, "💰 Caisse")
+        self.tabs.addTab(settings_tab, "⚙️ Paramètres")
         
         # Toolbar avec boutons à côté des onglets
         toolbar_widget = QWidget()
@@ -615,11 +656,16 @@ class ImprimerieApp(QMainWindow):
         self.caisse_header_widget.setVisible(False)
         
         # Afficher les boutons selon l'onglet actif
+        # index: 0=Accueil, 1=Rapports, 2=Caisse, 3=Paramètres
         if index == 0:  # Onglet Accueil
             self.toggle_form_button.setVisible(True)
         elif index == 2:  # Onglet Caisse
             self.caisse_header_widget.setVisible(True)
             self.actualiser_caisse_header()
+        elif index == 3:  # Onglet Paramètres
+            # Actualiser la liste des sauvegardes
+            if hasattr(self, 'settings_tab_widget'):
+                self.settings_tab_widget.load_backups_list()
     
     def create_history_frame(self, parent_layout):
         """Créer le frame pour l'historique des transactions"""

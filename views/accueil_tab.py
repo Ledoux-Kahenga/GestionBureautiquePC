@@ -9,7 +9,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QColor, QPixmap
 from datetime import datetime
 import os
-
+from config import (FONT_FAMILY, FONT_SIZE_SM, FONT_SIZE_MD, FONT_SIZE_LG, 
+                    FONT_SIZE_XL, FONT_SIZE_XXL, FONT_SIZE_HUGE, FONT_SIZE_MEGA)
 
 class AccueilTab(QWidget):
     """Onglet principal avec dashboard et transactions"""
@@ -31,7 +32,7 @@ class AccueilTab(QWidget):
         # Label de la date
         from config import COLOR_PRIMARY
         self.date_label = QLabel()
-        self.date_label.setFont(QFont("Arial", 16, QFont.Bold))
+        self.date_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_XXL, QFont.Bold))
         self.date_label.setStyleSheet(f"color: {COLOR_PRIMARY}; background-color: transparent;")
         self.date_label.setAlignment(Qt.AlignCenter)
         self.mettre_a_jour_date_label()
@@ -65,12 +66,12 @@ class AccueilTab(QWidget):
         recettes_layout = QVBoxLayout()
         
         recettes_title = QLabel("📈 Recettes")
-        recettes_title.setFont(QFont("Arial", 12, QFont.Bold))
+        recettes_title.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         recettes_title.setStyleSheet("color: white; background-color: transparent;")
         recettes_title.setAlignment(Qt.AlignCenter)
         
         self.recettes_label = QLabel("0.00 FC")
-        self.recettes_label.setFont(QFont("Arial", 20, QFont.Bold))
+        self.recettes_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_HUGE, QFont.Bold))
         self.recettes_label.setStyleSheet("color: white; background-color: transparent;")
         self.recettes_label.setAlignment(Qt.AlignCenter)
         
@@ -91,12 +92,12 @@ class AccueilTab(QWidget):
         solde_layout = QVBoxLayout()
         
         solde_title = QLabel("💰 Solde")
-        solde_title.setFont(QFont("Arial", 12, QFont.Bold))
+        solde_title.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         solde_title.setStyleSheet("color: white; background-color: transparent;")
         solde_title.setAlignment(Qt.AlignCenter)
         
         self.solde_label = QLabel("0.00 FC")
-        self.solde_label.setFont(QFont("Arial", 36, QFont.Bold))
+        self.solde_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MEGA, QFont.Bold))
         self.solde_label.setStyleSheet("color: white; background-color: transparent;")
         self.solde_label.setAlignment(Qt.AlignCenter)
         
@@ -117,12 +118,12 @@ class AccueilTab(QWidget):
         depenses_layout = QVBoxLayout()
         
         depenses_title = QLabel("📉 Dépenses")
-        depenses_title.setFont(QFont("Arial", 12, QFont.Bold))
+        depenses_title.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         depenses_title.setStyleSheet("color: white; background-color: transparent;")
         depenses_title.setAlignment(Qt.AlignCenter)
         
         self.depenses_label = QLabel("0.00 FC")
-        self.depenses_label.setFont(QFont("Arial", 20, QFont.Bold))
+        self.depenses_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_HUGE, QFont.Bold))
         self.depenses_label.setStyleSheet("color: white; background-color: transparent;")
         self.depenses_label.setAlignment(Qt.AlignCenter)
         
@@ -139,7 +140,7 @@ class AccueilTab(QWidget):
         cloture_layout.setSpacing(10)
         
         self.cloture_button = QPushButton("🔒 Clôturer le rapport du jour")
-        self.cloture_button.setFont(QFont("Arial", 12, QFont.Bold))
+        self.cloture_button.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         self.cloture_button.setCursor(Qt.PointingHandCursor)
         self.cloture_button.setStyleSheet(f"""
             QPushButton {{
@@ -161,13 +162,13 @@ class AccueilTab(QWidget):
         cloture_layout.addWidget(self.cloture_button)
         
         self.cloture_status = QLabel("")
-        self.cloture_status.setFont(QFont("Arial", 11))
+        self.cloture_status.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         self.cloture_status.setStyleSheet("background-color: transparent;")
         cloture_layout.addWidget(self.cloture_status)
         
         # Bouton Envoyer (visible uniquement si rapport clôturé)
         self.envoyer_button = QPushButton("📤 Envoyer")
-        self.envoyer_button.setFont(QFont("Arial", 12, QFont.Bold))
+        self.envoyer_button.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         self.envoyer_button.setCursor(Qt.PointingHandCursor)
         self.envoyer_button.setStyleSheet(f"""
             QPushButton {{
@@ -209,15 +210,15 @@ class AccueilTab(QWidget):
         # Type de transaction
         type_layout = QHBoxLayout()
         type_label = QLabel("Type:")
-        type_label.setFont(QFont("Arial", 11))
+        type_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         type_layout.addWidget(type_label)
         
         type_group = QButtonGroup()
         self.recette_radio = QRadioButton("Recette")
         self.depense_radio = QRadioButton("Dépense")
         self.recette_radio.setChecked(True)
-        self.recette_radio.setFont(QFont("Arial", 10))
-        self.depense_radio.setFont(QFont("Arial", 10))
+        self.recette_radio.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
+        self.depense_radio.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
         self.recette_radio.setStyleSheet(f"color: {COLOR_SUCCESS};")
         self.depense_radio.setStyleSheet(f"color: {COLOR_DANGER};")
         
@@ -232,12 +233,12 @@ class AccueilTab(QWidget):
         # Montant
         montant_layout = QHBoxLayout()
         montant_label = QLabel("Montant:")
-        montant_label.setFont(QFont("Arial", 11))
+        montant_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         montant_label.setFixedWidth(100)
         montant_layout.addWidget(montant_label)
         
         self.montant_entry = QLineEdit()
-        self.montant_entry.setFont(QFont("Arial", 11))
+        self.montant_entry.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         self.montant_entry.setPlaceholderText("Entrez le montant")
         self.montant_entry.setStyleSheet("""
             QLineEdit {
@@ -255,12 +256,12 @@ class AccueilTab(QWidget):
         # Description
         desc_layout = QHBoxLayout()
         desc_label = QLabel("Description:")
-        desc_label.setFont(QFont("Arial", 11))
+        desc_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         desc_label.setFixedWidth(100)
         desc_layout.addWidget(desc_label)
         
         self.description_entry = QLineEdit()
-        self.description_entry.setFont(QFont("Arial", 11))
+        self.description_entry.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         self.description_entry.setPlaceholderText("Description")
         self.description_entry.setStyleSheet("""
             QLineEdit {
@@ -321,9 +322,52 @@ class AccueilTab(QWidget):
         
         # Titre
         title_label = QLabel("Historique des opérations")
-        title_label.setFont(QFont("Arial", 14, QFont.Bold))
+        title_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_XL, QFont.Bold))
         title_label.setStyleSheet(f"color: {COLOR_PRIMARY}; background-color: transparent;")
         header_layout.addWidget(title_label)
+        
+        # Champ de recherche
+        self.search_entry = QLineEdit()
+        self.search_entry.setPlaceholderText("🔍 Rechercher...")
+        self.search_entry.setFixedWidth(200)
+        self.search_entry.setStyleSheet("""
+            QLineEdit {
+                padding: 8px 12px;
+                border: 2px solid #ddd;
+                border-radius: 18px;
+                background-color: #f5f5f5;
+            }
+            QLineEdit:focus {
+                border: 2px solid #2E86AB;
+                background-color: white;
+            }
+        """)
+        self.search_entry.textChanged.connect(self.filtrer_historique)
+        header_layout.addWidget(self.search_entry)
+        
+        # Filtre par type
+        from PyQt5.QtWidgets import QComboBox
+        type_label = QLabel("Type:")
+        type_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
+        type_label.setStyleSheet("background-color: transparent;")
+        header_layout.addWidget(type_label)
+        
+        self.type_filter = QComboBox()
+        self.type_filter.addItems(["Tous", "Recettes", "Dépenses"])
+        self.type_filter.setStyleSheet("""
+            QComboBox {
+                padding: 6px 12px;
+                border: 2px solid #ddd;
+                border-radius: 5px;
+                background-color: white;
+                min-width: 100px;
+            }
+            QComboBox:focus {
+                border: 2px solid #2E86AB;
+            }
+        """)
+        self.type_filter.currentTextChanged.connect(self.filtrer_historique_type)
+        header_layout.addWidget(self.type_filter)
         
         header_layout.addStretch()
         
@@ -427,7 +471,7 @@ class AccueilTab(QWidget):
         header.setMinimumHeight(45)
         header.setMaximumHeight(45)
 
-        header_font = QFont("Arial", 12, QFont.Bold)
+        header_font = QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold)
         header.setFont(header_font)
 
         # Largeurs des colonnes
@@ -647,10 +691,47 @@ class AccueilTab(QWidget):
                 }}
             """)
     
+    def filtrer_historique(self, texte_recherche):
+        """Filtrer l'historique selon le texte de recherche et le type"""
+        texte_recherche = texte_recherche.lower().strip()
+        type_filtre = self.type_filter.currentText()
+        
+        for row in range(self.table.rowCount()):
+            visible = True
+            
+            # Filtre par type
+            if type_filtre != "Tous":
+                type_item = self.table.item(row, 2)  # Colonne Type
+                if type_item:
+                    type_text = type_item.text().lower()
+                    if type_filtre == "Recettes" and "recette" not in type_text:
+                        visible = False
+                    elif type_filtre == "Dépenses" and "dépense" not in type_text:
+                        visible = False
+            
+            # Filtre par texte de recherche
+            if visible and texte_recherche:
+                visible = False
+                for col in range(self.table.columnCount()):
+                    item = self.table.item(row, col)
+                    if item and texte_recherche in item.text().lower():
+                        visible = True
+                        break
+            
+            self.table.setRowHidden(row, not visible)
+    
+    def filtrer_historique_type(self, type_filtre):
+        """Filtrer l'historique selon le type sélectionné"""
+        # Réappliquer le filtre avec le texte de recherche actuel
+        self.filtrer_historique(self.search_entry.text())
+    
     def afficher_liste_rapports(self):
         """Afficher la liste de tous les rapports pour sélection"""
         from PyQt5.QtWidgets import QDialog, QListWidget, QListWidgetItem, QDialogButtonBox
         from datetime import datetime
+        
+        # Réinitialiser le champ de recherche
+        self.search_entry.clear()
         
         dialog = QDialog(self)
         dialog.setWindowTitle("Sélectionner un rapport")

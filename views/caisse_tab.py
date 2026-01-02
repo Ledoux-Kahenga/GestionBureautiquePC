@@ -8,7 +8,8 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QFont, QColor
 from datetime import datetime, timedelta
-
+from config import (FONT_FAMILY, FONT_SIZE_SM, FONT_SIZE_MD, FONT_SIZE_LG, 
+                    FONT_SIZE_XL, FONT_SIZE_XXL)
 
 class CaisseTab(QWidget):
     """Onglet pour gérer la caisse (dépenses spéciales et apports)"""
@@ -67,7 +68,7 @@ class CaisseTab(QWidget):
         
         # Filtre de période pour les indicateurs
         period_label = QLabel("Période :")
-        period_label.setFont(QFont("Arial", 11, QFont.Bold))
+        period_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         header_layout.addWidget(period_label)
         
         self.indicators_period_filter = QComboBox()
@@ -89,7 +90,7 @@ class CaisseTab(QWidget):
         
         # Sélecteur de mois
         self.indicators_month_label = QLabel("Mois :")
-        self.indicators_month_label.setFont(QFont("Arial", 11, QFont.Bold))
+        self.indicators_month_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         self.indicators_month_label.hide()
         header_layout.addWidget(self.indicators_month_label)
         
@@ -158,12 +159,12 @@ class CaisseTab(QWidget):
         layout = QVBoxLayout()
         
         title_label = QLabel(title)
-        title_label.setFont(QFont("Arial", 11, QFont.Bold))
+        title_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         title_label.setStyleSheet("color: white; background-color: transparent;")
         title_label.setAlignment(Qt.AlignCenter)
         
         value_label = QLabel(value)
-        value_label.setFont(QFont("Arial", 16, QFont.Bold))
+        value_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_XXL, QFont.Bold))
         value_label.setStyleSheet("color: white; background-color: transparent;")
         value_label.setAlignment(Qt.AlignCenter)
         
@@ -181,7 +182,7 @@ class CaisseTab(QWidget):
         
         # Filtre par type
         type_label = QLabel("Type :")
-        type_label.setFont(QFont("Arial", 11, QFont.Bold))
+        type_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         filters_layout.addWidget(type_label)
         
         self.type_filter = QComboBox()
@@ -203,7 +204,7 @@ class CaisseTab(QWidget):
         
         # Filtre par période
         period_label = QLabel("Période :")
-        period_label.setFont(QFont("Arial", 11, QFont.Bold))
+        period_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         filters_layout.addWidget(period_label)
         
         self.period_filter = QComboBox()
@@ -225,7 +226,7 @@ class CaisseTab(QWidget):
         
         # Dates personnalisées
         date_debut_label = QLabel("Du :")
-        date_debut_label.setFont(QFont("Arial", 11, QFont.Bold))
+        date_debut_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         self.date_debut_label = date_debut_label
         filters_layout.addWidget(date_debut_label)
         
@@ -784,15 +785,18 @@ class DepenseDialog(QDialog):
             return
         
         # Procéder à l'ajout
-        success, result = self.controller.ajouter_transaction(
-            "depense", montant, description, "speciale"
-        )
-        
-        if success:
-            QMessageBox.information(self, "Succès", "Dépense spéciale ajoutée")
-            self.accept()
-        else:
-            QMessageBox.warning(self, "Erreur", result)
+        try:
+            transaction_id = self.controller.ajouter_transaction(
+                "depense", montant_float, description, "speciale"
+            )
+            
+            if transaction_id:
+                QMessageBox.information(self, "Succès", "Dépense spéciale ajoutée avec succès")
+                self.accept()
+            else:
+                QMessageBox.warning(self, "Erreur", "Erreur lors de l'ajout de la dépense")
+        except Exception as e:
+            QMessageBox.warning(self, "Erreur", f"Erreur: {str(e)}")
 
 
 class ApportDialog(QDialog):
@@ -930,12 +934,15 @@ class ApportDialog(QDialog):
             return
         
         # Procéder à l'ajout
-        success, result = self.controller.ajouter_transaction(
-            "apport", montant, description, "speciale"
-        )
-        
-        if success:
-            QMessageBox.information(self, "Succès", "Apport en capital ajouté")
-            self.accept()
-        else:
-            QMessageBox.warning(self, "Erreur", result)
+        try:
+            transaction_id = self.controller.ajouter_transaction(
+                "apport", montant_float, description, "speciale"
+            )
+            
+            if transaction_id:
+                QMessageBox.information(self, "Succès", "Apport en capital ajouté avec succès")
+                self.accept()
+            else:
+                QMessageBox.warning(self, "Erreur", "Erreur lors de l'ajout de l'apport")
+        except Exception as e:
+            QMessageBox.warning(self, "Erreur", f"Erreur: {str(e)}")

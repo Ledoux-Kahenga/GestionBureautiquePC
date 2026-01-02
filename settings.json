@@ -1,0 +1,10 @@
+{
+    "auto_backup": true,
+    "backup_on_close": true,
+    "max_backups": 1,
+    "backup_path": "C:\\Projets\\Bureautique\\GestionBureautiquePC\\backups",
+    "theme": "light",
+    "font_scale": 2,
+    "cloture_auto_time": "23:59",
+    "notify_before_cloture": true
+}

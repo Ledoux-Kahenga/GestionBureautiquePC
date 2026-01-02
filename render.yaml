@@ -1,0 +1,28 @@
+# Configuration de déploiement pour Render.com
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: gestion-imprimerie-api
+    runtime: python
+    region: frankfurt  # Région européenne la plus proche
+    plan: free
+    
+    # Commandes de build et démarrage
+    buildCommand: pip install -r requirements-api.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    
+    # Variables d'environnement
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: ENVIRONMENT
+        value: production
+    
+    # Healthcheck pour vérifier que l'API est en ligne
+    healthCheckPath: /api/docs
+    
+    # Auto-déploiement sur push GitHub
+    autoDeploy: true

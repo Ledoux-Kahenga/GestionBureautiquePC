@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel,
                              QMessageBox, QWidget)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
-
+from config import (FONT_FAMILY, FONT_SIZE_SM, FONT_SIZE_MD, FONT_SIZE_XXL)
 
 class ModifierTransactionDialog(QDialog):
     """Fenêtre de dialogue pour modifier une transaction"""
@@ -30,7 +30,7 @@ class ModifierTransactionDialog(QDialog):
         
         # Titre
         title = QLabel("✏️ Modifier la transaction")
-        title.setFont(QFont("Arial", 16, QFont.Bold))
+        title.setFont(QFont(FONT_FAMILY, FONT_SIZE_XXL, QFont.Bold))
         title.setStyleSheet(f"color: {COLOR_PRIMARY};")
         title.setAlignment(Qt.AlignCenter)
         layout.addWidget(title)
@@ -38,11 +38,11 @@ class ModifierTransactionDialog(QDialog):
         # ID (non modifiable, juste pour info)
         id_layout = QHBoxLayout()
         id_label = QLabel("ID:")
-        id_label.setFont(QFont("Arial", 11))
+        id_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         id_layout.addWidget(id_label)
         
         id_value = QLabel(str(self.transaction[0]))
-        id_value.setFont(QFont("Arial", 11, QFont.Bold))
+        id_value.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         id_layout.addWidget(id_value)
         id_layout.addStretch()
         layout.addLayout(id_layout)
@@ -50,14 +50,14 @@ class ModifierTransactionDialog(QDialog):
         # Type de transaction
         type_layout = QHBoxLayout()
         type_label = QLabel("Type:")
-        type_label.setFont(QFont("Arial", 11))
+        type_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         type_layout.addWidget(type_label)
         
         self.type_group = QButtonGroup()
         self.recette_radio = QRadioButton("Recette")
         self.depense_radio = QRadioButton("Dépense")
-        self.recette_radio.setFont(QFont("Arial", 10))
-        self.depense_radio.setFont(QFont("Arial", 10))
+        self.recette_radio.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
+        self.depense_radio.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
         self.recette_radio.setStyleSheet(f"color: {COLOR_SUCCESS};")
         self.depense_radio.setStyleSheet(f"color: {COLOR_DANGER};")
         
@@ -78,14 +78,14 @@ class ModifierTransactionDialog(QDialog):
         # Type de dépense (pour les dépenses)
         self.type_depense_layout = QHBoxLayout()
         type_depense_label = QLabel("Type de dépense:")
-        type_depense_label.setFont(QFont("Arial", 11))
+        type_depense_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         self.type_depense_layout.addWidget(type_depense_label)
         
         self.type_depense_group = QButtonGroup()
         self.depense_normale_radio = QRadioButton("Normale (journalière)")
         self.depense_speciale_radio = QRadioButton("Spéciale (caisse)")
-        self.depense_normale_radio.setFont(QFont("Arial", 10))
-        self.depense_speciale_radio.setFont(QFont("Arial", 10))
+        self.depense_normale_radio.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
+        self.depense_speciale_radio.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
         
         self.type_depense_group.addButton(self.depense_normale_radio, 1)
         self.type_depense_group.addButton(self.depense_speciale_radio, 2)
@@ -113,12 +113,12 @@ class ModifierTransactionDialog(QDialog):
         # Montant
         montant_layout = QHBoxLayout()
         montant_label = QLabel("Montant:")
-        montant_label.setFont(QFont("Arial", 11))
+        montant_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         montant_label.setFixedWidth(120)
         montant_layout.addWidget(montant_label)
         
         self.montant_entry = QLineEdit()
-        self.montant_entry.setFont(QFont("Arial", 11))
+        self.montant_entry.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         self.montant_entry.setText(str(self.transaction[2]))
         self.montant_entry.setStyleSheet("""
             QLineEdit {
@@ -136,12 +136,12 @@ class ModifierTransactionDialog(QDialog):
         # Description
         desc_layout = QHBoxLayout()
         desc_label = QLabel("Description:")
-        desc_label.setFont(QFont("Arial", 11))
+        desc_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         desc_label.setFixedWidth(120)
         desc_layout.addWidget(desc_label)
         
         self.description_entry = QLineEdit()
-        self.description_entry.setFont(QFont("Arial", 11))
+        self.description_entry.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         self.description_entry.setText(self.transaction[3])
         self.description_entry.setStyleSheet("""
             QLineEdit {
@@ -161,7 +161,7 @@ class ModifierTransactionDialog(QDialog):
         buttons_layout.addStretch()
         
         cancel_button = QPushButton("Annuler")
-        cancel_button.setFont(QFont("Arial", 11))
+        cancel_button.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD))
         cancel_button.setCursor(Qt.PointingHandCursor)
         cancel_button.setStyleSheet("""
             QPushButton {
@@ -179,7 +179,7 @@ class ModifierTransactionDialog(QDialog):
         buttons_layout.addWidget(cancel_button)
         
         save_button = QPushButton("Enregistrer")
-        save_button.setFont(QFont("Arial", 11, QFont.Bold))
+        save_button.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         save_button.setCursor(Qt.PointingHandCursor)
         save_button.setStyleSheet(f"""
             QPushButton {{

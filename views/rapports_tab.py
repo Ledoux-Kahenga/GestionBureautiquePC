@@ -7,7 +7,8 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QFont
 from datetime import datetime, timedelta
-
+from config import (FONT_FAMILY, FONT_SIZE_SM, FONT_SIZE_MD, FONT_SIZE_LG, 
+                    FONT_SIZE_XL, FONT_SIZE_XXL, FONT_SIZE_HUGE, FONT_SIZE_GIANT, FONT_SIZE_MEGA)
 
 class RapportsTab(QWidget):
     """Onglet pour visualiser et filtrer les rapports"""
@@ -58,12 +59,12 @@ class RapportsTab(QWidget):
         
         # Période: Aujourd'hui
         period_label = QLabel("Période:")
-        period_label.setFont(QFont("Arial", 11, QFont.Bold))
+        period_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         filters_layout.addWidget(period_label)
         
         self.period_filter = QComboBox()
         self.period_filter.addItems(["Aujourd'hui", "Cette semaine", "Ce mois", "Cette année", "Personnalisé"])
-        self.period_filter.setFont(QFont("Arial", 10))
+        self.period_filter.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
         self.period_filter.setFixedWidth(150)
         self.period_filter.currentTextChanged.connect(self.on_period_filter_changed)
         self.period_filter.setStyleSheet("""
@@ -78,7 +79,7 @@ class RapportsTab(QWidget):
         
         # Mois:
         self.month_label = QLabel("Mois:")
-        self.month_label.setFont(QFont("Arial", 11, QFont.Bold))
+        self.month_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         self.month_label.setVisible(False)  # Masqué par défaut
         filters_layout.addWidget(self.month_label)
         
@@ -87,7 +88,7 @@ class RapportsTab(QWidget):
                 "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
         self.month_filter.addItems(mois)
         self.month_filter.setCurrentIndex(datetime.now().month - 1)
-        self.month_filter.setFont(QFont("Arial", 10))
+        self.month_filter.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
         self.month_filter.setFixedWidth(120)
         self.month_filter.currentTextChanged.connect(self.appliquer_filtre)
         self.month_filter.setStyleSheet("""
@@ -103,7 +104,7 @@ class RapportsTab(QWidget):
         
         # Année
         self.year_label = QLabel("Année:")
-        self.year_label.setFont(QFont("Arial", 11, QFont.Bold))
+        self.year_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         self.year_label.setVisible(False)  # Masqué par défaut
         filters_layout.addWidget(self.year_label)
         
@@ -112,7 +113,7 @@ class RapportsTab(QWidget):
         for year in range(current_year - 5, current_year + 2):
             self.year_filter.addItem(str(year))
         self.year_filter.setCurrentText(str(current_year))
-        self.year_filter.setFont(QFont("Arial", 10))
+        self.year_filter.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
         self.year_filter.setFixedWidth(80)
         self.year_filter.currentTextChanged.connect(self.appliquer_filtre)
         self.year_filter.setStyleSheet("""
@@ -126,15 +127,35 @@ class RapportsTab(QWidget):
         self.year_filter.setVisible(False)  # Masqué par défaut
         filters_layout.addWidget(self.year_filter)
         
+        # Filtre par statut
+        statut_label = QLabel("Statut:")
+        statut_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
+        filters_layout.addWidget(statut_label)
+        
+        self.statut_filter = QComboBox()
+        self.statut_filter.addItems(["Tous", "Clôturés", "Non clôturés"])
+        self.statut_filter.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
+        self.statut_filter.setFixedWidth(120)
+        self.statut_filter.currentTextChanged.connect(self.appliquer_filtre)
+        self.statut_filter.setStyleSheet("""
+            QComboBox {
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background-color: white;
+            }
+        """)
+        filters_layout.addWidget(self.statut_filter)
+        
         # Date spécifique
         self.date_label = QLabel("Date spécifique:")
-        self.date_label.setFont(QFont("Arial", 11, QFont.Bold))
+        self.date_label.setFont(QFont(FONT_FAMILY, FONT_SIZE_MD, QFont.Bold))
         filters_layout.addWidget(self.date_label)
         
         self.date_picker = QDateEdit()
         self.date_picker.setCalendarPopup(True)
         self.date_picker.setDate(QDate.currentDate())
-        self.date_picker.setFont(QFont("Arial", 10))
+        self.date_picker.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM))
         self.date_picker.setFixedWidth(120)
         self.date_picker.setDisplayFormat("dd/MM/yyyy")
         self.date_picker.setStyleSheet("""
@@ -150,7 +171,7 @@ class RapportsTab(QWidget):
         # Bouton Afficher
         from config import COLOR_PRIMARY
         self.filter_button = QPushButton("📊 Afficher")
-        self.filter_button.setFont(QFont("Arial", 10, QFont.Bold))
+        self.filter_button.setFont(QFont(FONT_FAMILY, FONT_SIZE_SM, QFont.Bold))
         self.filter_button.setFixedSize(120, 38)
         self.filter_button.setCursor(Qt.PointingHandCursor)
         self.filter_button.setStyleSheet(f"""
@@ -207,12 +228,12 @@ class RapportsTab(QWidget):
         recette_layout.setSpacing(10)
         
         recette_title = QLabel("💰 Recette")
-        recette_title.setFont(QFont("Arial", 12, QFont.Bold))
+        recette_title.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         recette_title.setStyleSheet("color: rgba(255, 255, 255, 0.9); background-color: transparent; border-radius: 5px; padding: 8px;")
         recette_title.setAlignment(Qt.AlignCenter)
         
         self.recette_value = QLabel("40,000 FC")
-        self.recette_value.setFont(QFont("Arial", 24, QFont.Bold))
+        self.recette_value.setFont(QFont(FONT_FAMILY, FONT_SIZE_GIANT, QFont.Bold))
         self.recette_value.setStyleSheet("color: white; background-color: transparent; border-radius: 5px; padding: 12px;")
         self.recette_value.setAlignment(Qt.AlignCenter)
         
@@ -236,12 +257,12 @@ class RapportsTab(QWidget):
         solde_layout.setSpacing(10)
         
         solde_title = QLabel("💵 Solde")
-        solde_title.setFont(QFont("Arial", 12, QFont.Bold))
+        solde_title.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         solde_title.setStyleSheet("color: rgba(255, 255, 255, 0.9); background-color: transparent; border-radius: 5px; padding: 8px;")
         solde_title.setAlignment(Qt.AlignCenter)
         
         self.solde_value = QLabel("31,000 FC")
-        self.solde_value.setFont(QFont("Arial", 36, QFont.Bold))
+        self.solde_value.setFont(QFont(FONT_FAMILY, FONT_SIZE_MEGA, QFont.Bold))
         self.solde_value.setStyleSheet("color: white; background-color: transparent; border-radius: 5px; padding: 12px;")
         self.solde_value.setAlignment(Qt.AlignCenter)
         
@@ -263,12 +284,12 @@ class RapportsTab(QWidget):
         depense_layout.setSpacing(10)
         
         depense_title = QLabel("📉 Dépenses")
-        depense_title.setFont(QFont("Arial", 12, QFont.Bold))
+        depense_title.setFont(QFont(FONT_FAMILY, FONT_SIZE_LG, QFont.Bold))
         depense_title.setStyleSheet("color: rgba(255, 255, 255, 0.9); background-color: transparent; border-radius: 5px; padding: 8px;")
         depense_title.setAlignment(Qt.AlignCenter)
         
         self.depense_value = QLabel("9,000 FC")
-        self.depense_value.setFont(QFont("Arial", 24, QFont.Bold))
+        self.depense_value.setFont(QFont(FONT_FAMILY, FONT_SIZE_GIANT, QFont.Bold))
         self.depense_value.setStyleSheet("color: white; background-color: transparent; border-radius: 5px; padding: 12px;")
         self.depense_value.setAlignment(Qt.AlignCenter)
         
@@ -366,13 +387,28 @@ class RapportsTab(QWidget):
         # Obtenir les statistiques
         stats = self.controller.obtenir_statistiques_par_jour(date_debut, date_fin)
         
-        # Calculer les totaux pour les cartes (uniquement rapports clôturés)
-        total_recettes = 0
-        total_depenses = 0
-        total_solde = 0
+        # Récupérer le filtre statut
+        statut_filtre = self.statut_filter.currentText()
+        
+        # Filtrer par statut si nécessaire
+        stats_filtrees = []
         for stat in stats:
             date, recettes, depenses = stat
             est_cloture = self.controller.verifier_cloture(date)
+            
+            if statut_filtre == "Clôturés" and not est_cloture:
+                continue
+            elif statut_filtre == "Non clôturés" and est_cloture:
+                continue
+            
+            stats_filtrees.append((stat, est_cloture))
+        
+        # Calculer les totaux pour les cartes
+        total_recettes = 0
+        total_depenses = 0
+        total_solde = 0
+        for (stat, est_cloture) in stats_filtrees:
+            date, recettes, depenses = stat
             total_recettes += recettes
             total_depenses += depenses
             # Inclure le solde seulement si clôturé
@@ -385,14 +421,11 @@ class RapportsTab(QWidget):
         self.solde_value.setText(f"{total_solde:,.0f} FC")
         
         # Remplir le tableau
-        self.reports_table.setRowCount(len(stats))
+        self.reports_table.setRowCount(len(stats_filtrees))
         
-        for row, stat in enumerate(stats):
+        for row, (stat, est_cloture) in enumerate(stats_filtrees):
             date, recettes, depenses = stat
             solde = recettes - depenses
-            
-            # Vérifier si clôturé
-            est_cloture = self.controller.verifier_cloture(date)
             statut = "✓ Clôturé" if est_cloture else "En cours"
             
             # Date
@@ -458,16 +491,31 @@ class RapportsTab(QWidget):
         # Obtenir les statistiques
         stats = self.controller.obtenir_statistiques_par_jour(date_debut, date_fin)
         
+        # Récupérer le filtre statut
+        statut_filtre = self.statut_filter.currentText()
+        
+        # Filtrer par statut si nécessaire
+        stats_filtrees = []
+        for stat in stats:
+            date, recettes, depenses = stat
+            est_cloture = self.controller.verifier_cloture(date)
+            
+            if statut_filtre == "Clôturés" and not est_cloture:
+                continue
+            elif statut_filtre == "Non clôturés" and est_cloture:
+                continue
+            
+            stats_filtrees.append((stat, est_cloture))
+        
         # Calculer les totaux pour les cartes
         total_recettes = 0
         total_depenses = 0
         total_solde = 0
-        for stat in stats:
+        for (stat, est_cloture) in stats_filtrees:
             date, recettes, depenses = stat
             total_recettes += recettes
             total_depenses += depenses
             # Solde seulement pour rapports clôturés
-            est_cloture = self.controller.verifier_cloture(date)
             if est_cloture:
                 total_solde += (recettes - depenses)
         
@@ -477,14 +525,11 @@ class RapportsTab(QWidget):
         self.solde_value.setText(f"{total_solde:,.0f} FC")
         
         # Remplir le tableau
-        self.reports_table.setRowCount(len(stats))
+        self.reports_table.setRowCount(len(stats_filtrees))
         
-        for row, stat in enumerate(stats):
+        for row, (stat, est_cloture) in enumerate(stats_filtrees):
             date, recettes, depenses = stat
             solde = recettes - depenses
-            
-            # Vérifier si clôturé
-            est_cloture = self.controller.verifier_cloture(date)
             statut = "✓ Clôturé" if est_cloture else "En cours"
             
             # Date
